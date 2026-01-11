@@ -1,34 +1,39 @@
+using System;
 public class PlayerMotor
 {
-    private int MaxSpeed = 5;
-    private int acceleration = 5;
-    private int deceleration = 5;
+    private float maxSpeed;
+    private float acceleration;
+    private float deceleration;
     private float velocityX = 0;
     public float VelocityX { get { return velocityX; } }
-    public void Update(float deltaTime, float input)
+    public PlayerMotor(float maxSpeed, float acceleration, float deceleration)
+    {
+        this.maxSpeed = maxSpeed;
+        this.acceleration = acceleration;
+        this.deceleration = deceleration;
+    }
+    public void UpdateVelocity(float input, float deltaTime)
     {
         if (input != 0)
         {
-            velocityX += acceleration * deltaTime;
-            if (velocityX > MaxSpeed)
-                velocityX = MaxSpeed;
+            float targetVelocity = this.maxSpeed * input;
+            velocityX = this.MoveTowards(velocityX, targetVelocity, deltaTime * acceleration);
         }
         else
         {
-            velocityX -= deceleration * deltaTime;
-            if (velocityX < 0)
-                velocityX = 0;
+            float targetVelocity = 0f;
+            velocityX = this.MoveTowards(velocityX, targetVelocity, deltaTime * deceleration);
         }
     }
-    public void MoveTowards(float current, float target, float maxDelta)
+    public float MoveTowards(float current, float target, float maxDelta)
     {
         if (Math.Abs(target - current) <= maxDelta)
         {
-            current = target;
+            return target;
         }
         else
         {
-            current += Math.Sign(target - current) * maxDelta;
+            return current + Math.Sign(target - current) * maxDelta;
         }
     }
 }
