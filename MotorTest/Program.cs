@@ -5,24 +5,16 @@ class Program
 {
     static void Main()
     {
-        var motor = new PlayerMotor( 5f, 10f, 15f );
+        PlayerJump jump = new PlayerJump(12f);
 
-        float dt = 0.1f;
+        jump.SetGrounded(true);
+        jump.TryJump();
 
-        Console.WriteLine("=== HOLD RIGHT ===");
         for (int i = 0; i < 10; i++)
         {
-            motor.UpdateVelocity(1, dt);
-            Console.WriteLine($"Frame {i}: {motor.VelocityX:F2}");
-            Thread.Sleep(100);
-        }
-
-        Console.WriteLine("\n=== RELEASE ===");
-        for (int i = 0; i < 10; i++)
-        {
-            motor.UpdateVelocity(0, dt);
-            Console.WriteLine($"Frame {i}: {motor.VelocityX:F2}");
-            Thread.Sleep(100);
+            jump.ApplyGravity(-30f, 0.016f);
+            Console.WriteLine($"Frame {i} | Y velocity: {jump.getVerticalVelocity()}");
         }
     }
+
 }
