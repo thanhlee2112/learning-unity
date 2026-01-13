@@ -5,16 +5,20 @@ class Program
 {
     static void Main()
     {
-        PlayerJump jump = new PlayerJump(12f);
+        PlayerStateMachine sm = new PlayerStateMachine();
 
-        jump.SetGrounded(true);
-        jump.TryJump();
+        sm.UpdateState(0, 0, true);
+        Console.WriteLine(sm.currentState); // Idle
 
-        for (int i = 0; i < 10; i++)
-        {
-            jump.ApplyGravity(-30f, 0.016f);
-            Console.WriteLine($"Frame {i} | Y velocity: {jump.getVerticalVelocity()}");
-        }
+        sm.UpdateState(5, 0, true);
+        Console.WriteLine(sm.currentState); // Run
+
+        sm.UpdateState(5, 10, false);
+        Console.WriteLine(sm.currentState); // Jump
+
+        sm.UpdateState(5, -10, false);
+        Console.WriteLine(sm.currentState); // Fall
     }
+
 
 }
